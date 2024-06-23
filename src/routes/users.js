@@ -7,7 +7,7 @@ const router = new express.Router;
 //get all the users //for developer
 router.get('/users', async (req, res) => {
     try{
-        const users = await User.find({});
+        const user = await User.find({});
         res.status(200).send(user);
     }catch(e){
         res.status(400).send(e);
