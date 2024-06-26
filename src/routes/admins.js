@@ -31,3 +31,5 @@ router.post('/user', async (req, res) => {
 router.patch('/user/', async (req, res) => {
     
 })
+
+module.exports = router
