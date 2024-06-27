@@ -4,8 +4,11 @@ const auth = require('../middleware/auth')
 
 const router = new express.Router;
 
+
 //here login will create user   
 router.post('/login',  async (req, res) => {
+    
+res.set('Access-Control-Allow-Origin', '*');
     console.log(req.body)
     try{
         const newUser = new User(req.body);
