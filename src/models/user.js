@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true,
         validate(value){
-            if(value<=0 && value>20){
+            if(Number(value)<=0 && Number(value)>20){
                 throw new Error('Invalid table number')
             }
         }
