@@ -13,7 +13,8 @@ res.set('Access-Control-Allow-Origin', '*');
     try{
         const newUser = new User(req.body);
         newUser.save();
-        res.status(201).send(newUser);
+        const authToken = await newUser.generateAuthToken();
+        res.status(201).send({newUser, authToken});
     }catch(e){
         res.status(400).send(e);
     }

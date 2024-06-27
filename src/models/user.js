@@ -11,7 +11,13 @@ const userSchema = mongoose.Schema({
 
     tableNumber: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        validate(value){
+            if(value<=0 && value>20){
+                throw new Error('Invalid table number')
+            }
+        }
     },
 
     tokens: [{
@@ -24,7 +30,7 @@ const userSchema = mongoose.Schema({
 userSchema.methods.generateAuthToken = async function(){
     const user = this;
     const token = jwt.sign({_id: user._id.toString()}, 'SwiggyWeb');
-    user.tokens = user.tokens.concat(token);
+    user.tokens = user.tokens.concat({token});
     return token;
 }
 
