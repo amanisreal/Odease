@@ -43,6 +43,6 @@ adminSchema.methods.generateAuthToken = async function(){
     return token;
 }
 
-const User = mongoose.model('admin', adminSchema);
+const Admin = mongoose.model('admin', adminSchema);
 
-module.exports = User;
+module.exports = Admin;
