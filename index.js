@@ -16,18 +16,8 @@ app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-const corseOption = {
-    origin: '*',
-    Credentials: true,
-    OptionSuccessStatus: 200,
-}
 
-app.use(cors(corseOption))
 
-app.use(cors());
-
-app.use(userRouter);
-app.use(adminRouter);
 
 const connection = async () => {
     try{
@@ -38,6 +28,10 @@ const connection = async () => {
     }
 }
 connection();
+
+app.use(userRouter);
+app.use(adminRouter);
+
 app.listen(port ,() => {
     console.log(`Server is running on port ${port}`)
 })
