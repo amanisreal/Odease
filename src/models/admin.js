@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken')
 
-const adminSchema = mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: true,
@@ -43,6 +43,6 @@ adminSchema.methods.generateAuthToken = async function(){
     return token;
 }
 
-const User = new mongoose.model('admin', adminSchema);
+const User = mongoose.model('admin', adminSchema);
 
 module.exports = User;

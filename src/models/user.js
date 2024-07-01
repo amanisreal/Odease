@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken')
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: true,
@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true,
         validate(value){
-            if(Number(value)<=0 && Number(value)>20){
+            if(Number(value)<=0 || Number(value)>20){
                 throw new Error('Invalid table number')
             }
         }
@@ -34,6 +34,6 @@ userSchema.methods.generateAuthToken = async function(){
     return token;
 }
 
-const User = new mongoose.model('user', userSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;

@@ -12,7 +12,8 @@ res.set('Access-Control-Allow-Origin', '*');
     console.log(req.body)
     try{
         const newUser = new User(req.body);
-        newUser.save();
+        console.log(newUser)
+        await newUser.save();
         const authToken = await newUser.generateAuthToken();
         res.status(201).send({newUser, authToken});
     }catch(e){
@@ -22,6 +23,11 @@ res.set('Access-Control-Allow-Origin', '*');
 
 //get the user;
 router.get('/user', auth, async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
     const user = req.user;
     const token = req.token;
     try{
@@ -32,7 +38,8 @@ router.get('/user', auth, async (req, res) => {
 })
 
 //log out the user
-router.post('/user', auth, async(req, res) => {
+router.post('/user', auth, async(req, res) => { res.setHeader("Access-Control-Allow-Origin", "*");
+    
     try{
         const user = await User.findByIdAndDelete({_id: req.user._id});
         res.status(200).send(user);
