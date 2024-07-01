@@ -1,35 +1,21 @@
-const User = require("../models/user");
+const { JsonWebTokenError } = require("jsonwebtoken");
+const Admin = require("../models/admin");
 
 const express = require(express);
 
 const router = new express.Router;
 
-//get all the users //for developer
-router.get('/users', async (req, res) => {
+//create admin
+router.post('/createAdmin', async (req, res) => {
     try{
-        const user = await User.find({});
-        res.status(200).send(user);
-    }catch(e){
+        const newAdmin = new Admin(req.body);
+        const token = newAdmin.generateAuthToken();
+        await newAdmin.save();
+        res.status(201).send({newAdmin, JsonWebTokenError})
+    }
+    catch(e){
         res.status(400).send(e);
     }
-})
-
-
-//post a user
-router.post('/user', async (req, res) => {
-    const newUser = new User(req.body);
-    try{
-        await newUser.save();
-        const token = newUser.generateAuthToken();
-        res.status(201).send({newUser, token});
-    }catch(e){  
-        res.status(400).send(e);
-    }
-})
-
-//update a user
-router.patch('/user/', async (req, res) => {
-    
 })
 
 module.exports = router

@@ -1,5 +1,6 @@
 const express = require('express')
 const userRouter = require('./src/routes/users')
+const adminRouter = require('./src/routes/admins')
 const cors = require('cors')
 const connectBD = require('./src/database/mongoose')
 
@@ -26,7 +27,7 @@ app.use(cors(corseOption))
 app.use(cors());
 
 app.use(userRouter);
-
+app.use(adminRouter);
 
 const connection = async () => {
     try{
