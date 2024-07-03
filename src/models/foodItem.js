@@ -21,6 +21,10 @@ const foodItemSchems = new mongoose.Schema({
         required: true,
     },
 
+    foodImage:{
+        type: String,
+    }
+
 })
 
 const FoodItem = mongoose.model('foodItems', foodItemSchems);

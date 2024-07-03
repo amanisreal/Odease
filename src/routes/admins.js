@@ -8,6 +8,7 @@ const router = new express.Router;
 
 //create admin
 router.post('/createAdmin', async (req, res) => {
+    console.log(req.body);
     try{
         const newAdmin = new Admin(req.body);
         console.log('ji');
@@ -38,12 +39,17 @@ router.post('/createAdmin', async (req, res) => {
 })
 
 router.post('/adminLogin', async (req, res) => {
+    console.log(req.body);
     try{
         const admin = await Admin.findByCredentails(req.body.email, req.body.password);
         if(!admin){
             throw new Error('Incorrect details')
         }
-        res.status(200).send(admin);
+        //console.log('ok');
+        const token = await admin.generateAdminAuthToken();
+        //console.log('ok');
+        await admin.save();
+        res.status(200).send({admin, token});
     }catch(e){
         res.status(400).send(e);
     }

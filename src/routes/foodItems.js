@@ -1,10 +1,10 @@
 const FoodItem = require('../models/foodItem');
 const express = require('express');
-
+const auth = require('../middleware/auth')
 const router = new express.Router;
 
 //add food items;
-router.post('/addFoodItem', auth, async (req, res) => {
+router.post('/addFoodItem', async (req, res) => {
     try{
         const newFoodItem = new FoodItem(req.body);
         await newFoodItem.save();
@@ -15,7 +15,7 @@ router.post('/addFoodItem', auth, async (req, res) => {
 });
 
 //get all the food items
-router.post('/allFoodItems', async (req, res) => {
+router.get('/allFoodItems', async (req, res) => {
     try{
         const allVeg = await FoodItem({foodCategory: "veg"});
         const allNonVeg = await FoodItem({foodCategory: "nonveg"});
@@ -27,7 +27,7 @@ router.post('/allFoodItems', async (req, res) => {
 });
 
 //edit any food item
-router.patch('/editFoodItem/:id', auth, async (req, res) => {
+router.patch('/editFoodItem/:id', async (req, res) => {
     const foodId = req.params._id;
     const allChangesKey = Object.keys(req.body);
     const allowedUpdated = ['foodName' ,'foodCategory', 'foodDescription', 'foodPrice'];
@@ -58,7 +58,7 @@ router.patch('/editFoodItem/:id', auth, async (req, res) => {
 });
 
 //delete a particular food item
-router.delete('/deleteFoodItem/:id', auth, async (req, res) => {
+router.delete('/deleteFoodItem/:id',  async (req, res) => {
     const _id = req.params._id;
     try{
         const foodItem = await FoodItem.findByIdAndDelete({_id: _id});

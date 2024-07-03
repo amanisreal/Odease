@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
 
 const adminSchema = new mongoose.Schema({
     userName: {
@@ -36,6 +37,14 @@ const adminSchema = new mongoose.Schema({
     }]
 })
 
+adminSchema.pre('save', async function(next){
+    const admin = this;
+    if(admin.isModified('password')){
+        admin.password = await bcrypt.hash(admin.password, 8);
+    }
+    next();
+})
+
 adminSchema.methods.generateAdminAuthToken = async function(){
     const admin = this;
     const token = jwt.sign({_id: admin._id.toString()}, 'SwiggyWeb');
@@ -45,9 +54,11 @@ adminSchema.methods.generateAdminAuthToken = async function(){
     return token;
 }
 
-
 adminSchema.statics.findByCredentails = async function (email, password){
+    console.log('ji')
+    console.log(email, password);
     const admin = await Admin.findOne({email: email});
+    console.log(admin);
     if(!admin){
         throw new Error('No such admin exists')
     } 
@@ -58,6 +69,6 @@ adminSchema.statics.findByCredentails = async function (email, password){
     return admin;
 }
 
-const Admin = mongoose.model('admin', adminSchema);
+const Admin = mongoose.model('admins', adminSchema);
 
 module.exports = Admin;
