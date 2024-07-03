@@ -28,6 +28,9 @@ app.use(userRouter);
 app.use(adminRouter);
 app.use(foodRouter)
 
+app.get('/', (req,res)=> {
+    res.send("welcome");
+})
 app.listen(port ,() => {
     console.log(`Server is running on port ${port}`)
 })
