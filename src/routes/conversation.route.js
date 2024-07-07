@@ -24,7 +24,8 @@ router.get('/conversation/:userId',async(req,res) => {
        const conversation = await Conversations.find({members: {$in: [userId]}});
        const conversationUserData = await Promise.all(conversation.map(async (conversation) => {
         const receiverId = conversation.members.find((member) => member!==userId);
-        return await User.findById(receiverId);
+        const user = await User.findById(receiverId);
+        return {user: {userName: user.userName, tableNumber: user.tableNumber},conversationId: conversation._id};
        }))
        console.log(conversationUserData);
        res.status(200).json(conversationUserData);

@@ -5,6 +5,7 @@ const adminRouter = require('./src/routes/admins')
 const foodRouter = require('./src/routes/foodItems')
 const connectBD = require('./src/database/mongoose')
 const conversationRouter = require('./src/routes/conversation.route')
+const messageRouter = require('./src/routes/message.route')
 
 const port = process.env.PORT || 3001;
 
@@ -38,7 +39,8 @@ connection();
 app.use(userRouter);
 app.use(adminRouter);
 app.use(foodRouter);
-app.use(conversationRouter)
+app.use(conversationRouter);
+app.use(messageRouter);
 
 app.get('/', (req,res)=> {
     res.send("welcome");
