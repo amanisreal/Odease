@@ -1,20 +1,29 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const auth = async(req, res, next) => {
-    try{
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decode = jwt.verify(token, 'SwiggyWeb');
-        const user = await User.findOne({_id: decode._id, 'tokens.token':token});
-        if(!user){
-            throw new Error('Invalid User');
+const auth = async (req, res, next) => {
+    try {
+        const authHeader = req.header('Authorization');
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            throw new Error('Authorization header is missing or malformed');
         }
+
+        const token = authHeader.replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'SwiggyWeb');
+        
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
         req.token = token;
         req.user = user;
         next();
-    }catch(e){
-        res.status(401).send({error: 'Please authenticate properly'});
+    } catch (e) {
+        res.status(401).send({ error: 'Please authenticate properly' });
     }
-}
+};
 
 module.exports = auth;

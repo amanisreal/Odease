@@ -2,7 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth')
 
-const router = new express.Router;
+const router = new express.Router();
 
 
 //here login will create user   
