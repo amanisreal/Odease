@@ -17,10 +17,11 @@ router.post('/addFoodItem', async (req, res) => {
 //get all the food items
 router.get('/allFoodItems', async (req, res) => {
     try{
-        const allVeg = await FoodItem({foodCategory: "veg"});
-        const allNonVeg = await FoodItem({foodCategory: "nonveg"});
-
-        res.send({allVeg, allNonVeg});
+        const allFood = await FoodItem.find({});
+        // const allNonVeg = await FoodItem({foodCategory: "nonveg"});
+        // const result = [...allVeg, ...allNonVeg];
+        console.log(allFood)
+        res.send(allFood);
     }catch(e){
         res.status(400).send(e);
     }

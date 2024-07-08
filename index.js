@@ -8,8 +8,12 @@ const port = process.env.PORT || 3001;
 
 const app = express();
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://odease-f.vercel.app"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*"); //https://odease-f.vercel.app // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "*"); //Origin, X-Requested-With, Content-Type, Accept
+   // Access-Control-Allow-Origin: www.other.com
+   //Access-Control-Allow-Methods: GET, POST, PUT, PATCH, POST, DELETE, OPTIONS
+   //Access-Control-Allow-Headers: Content-Type
+   //Access-Control-Max-Age: 86400
     next();
   });
 app.use(express.json());
